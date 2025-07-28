@@ -8,7 +8,7 @@
 material_theme_project_new.xml
 misc.xml
 modules.xml
-qodana.yaml
+config/qodana.yaml
 vcs.xml
 
 # User-specific stuff

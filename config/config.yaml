@@ -1,0 +1,16 @@
+application:
+    name: "KORNKANOK-Playground"
+    env: development
+    port: ":8080" # Example application port
+
+database:
+    host: "localhost"
+    port: "3306"
+    user: "root"
+    password: ""
+    dbname: "playground"
+
+log:
+    level: debug
+    format: console
+    output: stdout
