@@ -1,15 +1,17 @@
 package main
 
 import (
-	"fmt"
+	"errors"
+	"github.com/labstack/echo/v4"
+	"go-playground/internal/api"
 	"go-playground/internal/config"
 	"go-playground/internal/logger"
 	"go-playground/internal/repositories"
 	"go.uber.org/zap"
+	"net/http"
 )
 
 func main() {
-	fmt.Println("Hello World")
 
 	// Initial Config
 	cfg := config.InitConfig()
@@ -38,6 +40,15 @@ func main() {
 		appLogger.Fatal("Failed to initialize database connection.")
 	}
 
-	// ... โค้ดส่วนอื่นๆ ของแอปพลิเคชัน
-	appLogger.Info("Application started successfully!")
+	//Init Echo service API
+	e := echo.New()
+	router := api.NewRouter(e, cfg, appLogger)
+
+	appLogger.Info("Starting Echo server...", zap.String("port", cfg.App.Port))
+	if err := router.EchoInstance.Start(cfg.App.Port); err != nil && !errors.Is(err, http.ErrServerClosed) {
+		appLogger.Fatal("Echo server failed to start.", zap.Error(err))
+	}
+
+	appLogger.Info("Application gracefully shut down.")
+
 }
